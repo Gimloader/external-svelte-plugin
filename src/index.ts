@@ -1,19 +1,19 @@
 import type { Plugin } from "esbuild";
 
 const keysCache = new Map<string, string[]>();
-const validImports = [
-    "svelte",
-    "svelte/internal/client",
-    "svelte/animate",
-    "svelte/attachments",
-    "svelte/easing",
-    "svelte/events",
-    "svelte/motion",
-    "svelte/reactivity/window",
-    "svelte/reactivity",
-    "svelte/store",
-    "svelte/transition",
-]
+const imports: Record<string, string> = {
+    "svelte": "Index",
+    "svelte/internal/client": "Client",
+    "svelte/animate": "Animate",
+    "svelte/attachments": "Attachments",
+    "svelte/easing": "Easing",
+    "svelte/events": "Events",
+    "svelte/motion": "Motion",
+    "svelte/reactivity/window": "WindowReactivity",
+    "svelte/reactivity": "Reactivity",
+    "svelte/store": "Store",
+    "svelte/transition": "Transition"
+}
 
 const reserved = ["if", "await"];
 const svelteVersion = "5_43_0";
@@ -23,7 +23,7 @@ export function externalSvelte(): Plugin {
         name: "external-svelte",
         setup(build) {
             build.onResolve({ filter: /^svelte/ }, async (args) => {
-                if(validImports.includes(args.path)) {
+                if(imports[args.path]) {
                     return { path: args.path, namespace: "external-svelte" };
                 }
 
@@ -31,7 +31,7 @@ export function externalSvelte(): Plugin {
             }); 
 
             build.onLoad({ filter: /.*/, namespace: "external-svelte" }, async (args) => {
-                const contents = await createContents(args.path, "Index");
+                const contents = await createContents(args.path);
                 return { contents, loader: "js" }
             });
 
@@ -42,7 +42,8 @@ export function externalSvelte(): Plugin {
     }
 }
 
-async function createContents(path: string, type: string){ 
+async function createContents(path: string){ 
+    const type = imports[path];
     let keys = keysCache.get(path);
     if(!keys) {
         keys = Object.keys(await import(path));
