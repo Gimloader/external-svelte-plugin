@@ -1,0 +1,15 @@
+{
+  "name": "@gimloader/external-svelte-plugin",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "esbuild": ">=0.17.0",
+    "svelte": "5.43.0",
+    "typescript": "^5"
+  },
+  "type": "module"
+}

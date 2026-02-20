@@ -1,0 +1,2 @@
+# @gimloader/external-svelte-plugin
+
