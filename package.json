@@ -1,9 +1,16 @@
 {
   "name": "@gimloader/external-svelte-plugin",
   "description": "Allows bundled Gimloader plugins to use Gimloader's exposed svelte exports",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gimloader/external-svelte-plugin"
+  },
   "scripts": {
     "build": "tsc"
   },
